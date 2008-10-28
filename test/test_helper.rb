@@ -1,7 +1,9 @@
-require File.dirname(__FILE__) + '/../init.rb'
+$LOAD_PATH << File.dirname(__FILE__) + '/../lib'
 require 'rubygems'
-require 'activerecord'
+require 'active_record'
+require 'activesupport'
 require 'expectations'
+require File.dirname(__FILE__) + '/../init.rb'
 
 ActiveRecord::Base.configurations = {'sqlite3' => {:adapter => 'sqlite3', :database => ':memory:'}}
 ActiveRecord::Base.establish_connection('sqlite3')

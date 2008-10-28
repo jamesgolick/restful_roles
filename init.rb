@@ -1,1 +1,4 @@
-# Include hook code here
+require 'restful_roles'
+
+ActiveRecord::Base.send(:include, RestfulRoles::ActiveRecord)
+
