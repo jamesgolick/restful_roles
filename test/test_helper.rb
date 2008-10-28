@@ -12,11 +12,12 @@ ActiveRecord::Base.logger = Logger.new(STDERR)
 ActiveRecord::Base.logger.level = Logger::WARN
 
 ActiveRecord::Schema.define(:version => 0) do
-  create_table :post do |t|
+  create_table :posts do |t|
   end
 end
 
 class Post < ActiveRecord::Base
-  permits :create, :if => lambda { |person| person.let_me_create? }
+  permits :create, :if => lambda { |trustee| trustee.let_me_create? }
+  permits :update, :if => lambda { |trustee, post| post.likes?(trustee) }
 end
 
