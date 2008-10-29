@@ -11,5 +11,9 @@ Expectations do
   expect Post.new.not.to.be.permits?(:update, stub_everything) do |post|
     post.stubs(:likes?).returns(false)
   end
+
+  expect MockController.to.receive(:before_filter).with(:check_permissions, :only => :create) do
+    MockController.send(:checks_permissions, :only => :create)
+  end
 end
 

@@ -21,3 +21,7 @@ class Post < ActiveRecord::Base
   permits :update, :if => lambda { |trustee, post| post.likes?(trustee) }
 end
 
+class MockController
+  include RestfulRoles::ActionController
+end
+
