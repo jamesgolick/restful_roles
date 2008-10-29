@@ -19,7 +19,18 @@ Expectations do
   person = stub(:let_me_create? => true)
   expect Post.to.receive(:permits?).with(:create, person) do
     controller = MockController.new
-    controller.stubs(:current_person).returns(person)
+    controller.stubs(:current_user).returns(person)
+    controller.stubs(:model).returns(Post)
+    controller.stubs(:params).returns({:action => 'create'})
+    controller.send(:check_permissions)
+  end
+
+  expect Post.to.receive(:permits?).with(:create, person) do
+    MockController.stubs(:before_filter)
+    MockController.send(:checks_permissions, :trustee => :current_something_else)
+
+    controller = MockController.new
+    controller.stubs(:current_something_else).returns(person)
     controller.stubs(:model).returns(Post)
     controller.stubs(:params).returns({:action => 'create'})
     controller.send(:check_permissions)
