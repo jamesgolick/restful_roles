@@ -1,6 +1,7 @@
 $LOAD_PATH << File.dirname(__FILE__) + '/../lib'
 require 'rubygems'
 require 'active_record'
+require 'action_controller'
 require 'activesupport'
 require 'expectations'
 require File.dirname(__FILE__) + '/../init.rb'
