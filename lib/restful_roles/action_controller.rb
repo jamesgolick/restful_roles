@@ -6,14 +6,16 @@ module RestfulRoles
         include InstanceMethods
 
         class_inheritable_accessor :restful_roles_options
-        self.restful_roles_options = { :trustee => :current_user }
+        self.restful_roles_options = { :trustee => :current_user, :deny_with => :access_denied }
       end
     end
 
     module ClassMethods
       protected
         def checks_permissions(opts = {})
-          restful_roles_options[:trustee] = opts.delete(:trustee) if opts.has_key?(:trustee)
+          restful_roles_options.keys.each do |key|
+            restful_roles_options[key] = opts.delete(key) if opts.has_key?(key)
+          end
 
           before_filter :check_permissions, opts
         end
@@ -25,7 +27,7 @@ module RestfulRoles
           action   = RestfulRoles.action_name_for(params[:action])
           receiver = RestfulRoles.class_decides?(action) ? model : object
 
-          receiver.permits?(action, send(restful_roles_options[:trustee]))
+          receiver.permits?(action, send(restful_roles_options[:trustee])) || send(restful_roles_options[:deny_with])
         end
     end
   end
