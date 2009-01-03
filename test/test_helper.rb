@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(:version => 0) do
 end
 
 class Post < ActiveRecord::Base
-  permits :create, :if => lambda { |trustee| trustee.let_me_create? }
-  permits :update, :if => lambda { |trustee, post| post.likes?(trustee) }
+  permits(:create) { |trustee| trustee.let_me_create? }
+  permits(:update) { |trustee, post| post.likes?(trustee) }
 end
 
 class MockController
