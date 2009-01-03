@@ -12,6 +12,12 @@ Expectations do
     post.stubs(:likes?).returns(false)
   end
 
+  expect Post.new.to.be.permits?(:destroy, stub_everything, :context => :yes)
+  expect Post.new.not.to.be.permits?(:destroy, stub_everything, :context => :no)
+
+  expect Post.to.be.permits?(:class_action, stub_everything, :context => :no)
+  expect Post.not.to.be.permits?(:class_action, stub_everything, :context => :yes)
+
   expect MockController.to.receive(:before_filter).with(:check_permissions, :only => :create) do
     MockController.send(:checks_permissions, :only => :create)
   end

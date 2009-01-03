@@ -18,8 +18,10 @@ ActiveRecord::Schema.define(:version => 0) do
 end
 
 class Post < ActiveRecord::Base
-  permits(:create) { |trustee| trustee.let_me_create? }
-  permits(:update) { |trustee, post| post.likes?(trustee) }
+  permits(:create)       { |trustee, opts| trustee.let_me_create? }
+  permits(:update)       { |trustee, post, opts| post.likes?(trustee) }
+  permits(:destroy)      { |trustee, post, opts| opts[:context] == :yes }
+  permits(:class_action) { |trustee, opts| opts[:context] == :no }
 end
 
 class MockController

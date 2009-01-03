@@ -15,18 +15,18 @@ module RestfulRoles
         permissions[action] = block
       end
 
-      def permits?(action, trustee)
+      def permits?(action, trustee, opts={})
         return false if permissions[action].nil?
 
-        permissions[action].call(trustee)
+        permissions[action].call(trustee, opts)
       end
     end
 
     module InstanceMethods
-      def permits?(action, trustee)
+      def permits?(action, trustee, opts={})
         return false if permissions[action].nil?
 
-        permissions[action].call(trustee, self)
+        permissions[action].call(trustee, self, opts)
       end
     end
   end
